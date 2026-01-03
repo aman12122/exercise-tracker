@@ -119,8 +119,9 @@ export function useCompleteSession() {
     const userId = useCurrentUserId();
 
     return useMutation({
-        mutationFn: (sessionId: string) => sessionService.completeSession(sessionId),
-        onMutate: async (sessionId) => {
+        mutationFn: ({ sessionId, finalDetails }: { sessionId: string; finalDetails?: { name?: string; muscleGroups?: any[] } }) =>
+            sessionService.completeSession(sessionId, finalDetails),
+        onMutate: async ({ sessionId, finalDetails }) => {
             // Cancel any outgoing refetches
             await queryClient.cancelQueries({ queryKey: sessionKeys.detail(sessionId) });
             await queryClient.cancelQueries({ queryKey: sessionKeys.active(userId) });
@@ -135,13 +136,14 @@ export function useCompleteSession() {
                     status: 'completed',
                     completedAt: new Date(),
                     updatedAt: new Date(),
+                    ...finalDetails,
                 };
                 queryClient.setQueryData(sessionKeys.detail(sessionId), optimisticSession);
             }
 
             return { previousSession };
         },
-        onError: (_err, sessionId, context) => {
+        onError: (_err, { sessionId }, context) => {
             if (context?.previousSession) {
                 queryClient.setQueryData(sessionKeys.detail(sessionId), context.previousSession);
             }

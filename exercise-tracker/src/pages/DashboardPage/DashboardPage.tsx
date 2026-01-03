@@ -261,6 +261,17 @@ export function DashboardPage() {
                         </div>
                         <span className={styles.actionArrow}>→</span>
                     </div>
+                    <div
+                        className={styles.actionCard}
+                        onClick={() => navigate('/history')}
+                    >
+                        <div className={styles.actionIcon}>📅</div>
+                        <div className={styles.actionText}>
+                            <div className={styles.actionTitle}>Workout History</div>
+                            <div className={styles.actionSubtitle}>View activity log</div>
+                        </div>
+                        <span className={styles.actionArrow}>→</span>
+                    </div>
                 </div>
 
                 {/* Progress Section */}

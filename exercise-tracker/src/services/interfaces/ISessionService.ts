@@ -8,6 +8,7 @@ import type {
     CreateSessionDTO,
     CreateSetDTO,
     UpdateSetDTO,
+    MuscleGroup,
 } from '@/domain';
 
 export interface ISessionService {
@@ -49,7 +50,7 @@ export interface ISessionService {
     /**
      * Complete a session (transition from in_progress to completed)
      */
-    completeSession(sessionId: string): Promise<WorkoutSession>;
+    completeSession(sessionId: string, finalDetails?: { name?: string, muscleGroups?: MuscleGroup[] }): Promise<WorkoutSession>;
 
     /**
      * Abandon a session

@@ -205,45 +205,71 @@ export class FirebaseSessionService implements ISessionService {
         });
     }
 
-    async completeSession(sessionId: string): Promise<WorkoutSession> {
+    async completeSession(sessionId: string, finalDetails?: { name?: string, muscleGroups?: any[] }): Promise<WorkoutSession> {
         if (!db) throw new Error("Firebase DB not initialized");
         const userId = this.getUserIdOrThrow();
         const sessionRef = doc(db, 'users', userId, 'workoutSessions', sessionId);
 
         const snap = await getDoc(sessionRef);
         if (!snap.exists()) throw new Error("Session does not exist");
-        const sessionData = mapSession(snap.id, snap.data());
+        const currentData = mapSession(snap.id, snap.data());
 
         const batch = writeBatch(db);
         const completedAt = new Date();
 
-        // Update session status
-        batch.update(sessionRef, {
+        // Prepare updates
+        const updates: any = {
             status: 'completed',
             completedAt: serverTimestamp(),
             updatedAt: serverTimestamp()
-        });
+        };
+
+        if (finalDetails?.name) updates.name = finalDetails.name;
+        if (finalDetails?.muscleGroups) updates.muscleGroups = finalDetails.muscleGroups;
+
+        // Update session
+        batch.update(sessionRef, updates);
 
         // Write summary to workoutsCompleted
-        // Format YYYY-MM-DD locally
-        const dateStr = sessionData.sessionDate.toISOString().split('T')[0];
+        const dateStr = currentData.sessionDate.toISOString().split('T')[0];
         const summaryRef = doc(db, 'users', userId, 'workoutsCompleted', dateStr);
 
+        // Merge current data with updates for summary
+        const summaryData = {
+            date: dateStr,
+            type: currentData.type || 'custom',
+            sessionId: sessionId,
+            name: finalDetails?.name || currentData.name,
+            muscleGroups: finalDetails?.muscleGroups || currentData.muscleGroups || [], // Add muscleGroups to summary if possible?
+            // The user didn't explicitly ask for summary to change, but good to keep it consistent.
+            // However, workoutsCompleted schema might be used elsewhere. 
+            // Previous code didn't save muscleGroups to summary. I'll just stick to saving what was there + name.
+            // Actually, if I want to query by muscle group later, I should save it.
+            // But let's stick to minimum changes to avoid breaking strict schema elsewhere if it exists.
+            completedAt: serverTimestamp()
+        };
+
+        // Note: The previous code was:
+        /*
         batch.set(summaryRef, {
             date: dateStr,
-            type: sessionData.type || 'custom', // fallback
+            type: sessionData.type || 'custom',
             sessionId: sessionId,
             name: sessionData.name,
             completedAt: serverTimestamp()
         });
+        */
+
+        batch.set(summaryRef, summaryData);
 
         await batch.commit();
 
         return {
-            ...sessionData,
-            status: 'completed',
+            ...currentData,
+            ...updates,
             completedAt: completedAt,
-            updatedAt: completedAt
+            updatedAt: completedAt,
+            // If serverTimestamp was used, we return local date.
         };
     }
 

@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
-import type { Exercise } from '@/domain';
+import type { Exercise, MuscleGroup } from '@/domain';
 import { calculateSessionVolume } from '@/domain';
 import { useAuthStore } from '@/store';
 import { getDisplayWeight, formatWeight } from '@/lib/measurementUtils';
@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/common';
 import { ExerciseSelector } from '@/features/exercises';
 import { SessionExerciseCard } from '../SessionExerciseCard';
+import { FinishWorkoutModal } from '../FinishWorkoutModal/FinishWorkoutModal';
 import styles from './WorkoutSessionView.module.css';
 
 interface WorkoutSessionViewProps {
@@ -42,6 +43,7 @@ export function WorkoutSessionView({ sessionId }: WorkoutSessionViewProps) {
     const removeExercise = useRemoveExerciseFromSession();
 
     const [isExerciseSelectorOpen, setExerciseSelectorOpen] = useState(false);
+    const [isFinishModalOpen, setFinishModalOpen] = useState(false);
     const [elapsedTime, setElapsedTime] = useState(0);
 
     // Timer for in-progress sessions
@@ -71,7 +73,18 @@ export function WorkoutSessionView({ sessionId }: WorkoutSessionViewProps) {
     };
 
     const handleComplete = () => {
-        completeSession.mutate(sessionId);
+        setFinishModalOpen(true);
+    };
+
+    const handleConfirmFinish = (name: string, muscleGroups: MuscleGroup[]) => {
+        completeSession.mutate({
+            sessionId,
+            finalDetails: { name, muscleGroups }
+        }, {
+            onSuccess: () => {
+                setFinishModalOpen(false);
+            }
+        });
     };
 
     // Toggle exercise: add if not present, remove if already added
@@ -269,6 +282,17 @@ export function WorkoutSessionView({ sessionId }: WorkoutSessionViewProps) {
                 onSelect={handleAddExercise}
                 selectedIds={selectedExerciseIds}
             />
+
+            {/* Finish Workout Modal */}
+            {session && (
+                <FinishWorkoutModal
+                    isOpen={isFinishModalOpen}
+                    onClose={() => setFinishModalOpen(false)}
+                    onConfirm={handleConfirmFinish}
+                    session={session}
+                    isSubmitting={completeSession.isPending}
+                />
+            )}
         </div>
     );
 }

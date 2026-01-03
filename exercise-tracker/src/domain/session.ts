@@ -1,5 +1,5 @@
 // Domain model for Workout Session and Set logging
-import type { Exercise } from './exercise';
+import type { Exercise, MuscleGroup } from './exercise';
 
 export type SessionStatus = 'not_started' | 'in_progress' | 'completed' | 'abandoned';
 
@@ -57,6 +57,7 @@ export interface WorkoutSession {
     sessionDate: Date;
     status: SessionStatus;
     type?: WorkoutType;
+    muscleGroups?: MuscleGroup[];
     exercises: SessionExercise[];
     startedAt?: Date;
     completedAt?: Date;

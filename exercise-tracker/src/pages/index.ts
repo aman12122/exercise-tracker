@@ -8,3 +8,5 @@ export { BeginWorkoutPage } from './BeginWorkoutPage/BeginWorkoutPage';
 export { ActiveWorkoutPage } from './WorkoutPage/ActiveWorkoutPage';
 export { ProfilePage } from './ProfilePage/ProfilePage';
 export { PreferencesPage } from './PreferencesPage/PreferencesPage';
+export { HistoryPage } from './HistoryPage/HistoryPage';
+
