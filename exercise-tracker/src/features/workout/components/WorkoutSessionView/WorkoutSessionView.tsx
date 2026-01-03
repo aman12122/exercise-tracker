@@ -129,7 +129,10 @@ export function WorkoutSessionView({ sessionId }: WorkoutSessionViewProps) {
                     <h1 className={styles.title}>{session.name || 'Workout Session'}</h1>
                     <div className={styles.metaRow}>
                         <div className={styles.date}>
-                            {format(new Date(session.sessionDate), 'EEEE, MMMM d')}
+                            {session.sessionDate
+                                ? format(session.sessionDate, 'EEEE, MMMM d')
+                                : 'Date unavailable'
+                            }
                         </div>
                         {session.type && (
                             <span className={styles.typeBadge}>

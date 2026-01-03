@@ -27,14 +27,26 @@ import { getNextSetNumber } from '@/domain';
 import { firebaseExerciseService } from './FirebaseExerciseService';
 import { v4 as uuidv4 } from 'uuid';
 
+const parseFirestoreDate = (date: any): Date => {
+    if (!date) return new Date();
+    if (date instanceof Date) return date;
+    if (typeof date.toDate === 'function') return date.toDate();
+    // Handle serialized timestamps (common in some envs)
+    if (typeof date.seconds === 'number') return new Date(date.seconds * 1000);
+    const parsed = new Date(date);
+    if (!isNaN(parsed.getTime())) return parsed;
+    console.warn('[FirebaseSessionService] Invalid date encountered:', date);
+    return new Date(); // Fallback to now to prevent crash
+};
+
 const mapSession = (id: string, data: any): WorkoutSession => ({
     id,
     ...data,
-    sessionDate: data.sessionDate?.toDate ? data.sessionDate.toDate() : new Date(data.sessionDate),
-    createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : new Date(data.createdAt),
-    updatedAt: data.updatedAt?.toDate ? data.updatedAt.toDate() : new Date(data.updatedAt),
-    startedAt: data.startedAt?.toDate ? data.startedAt.toDate() : undefined,
-    completedAt: data.completedAt?.toDate ? data.completedAt.toDate() : undefined,
+    sessionDate: parseFirestoreDate(data.sessionDate),
+    createdAt: parseFirestoreDate(data.createdAt),
+    updatedAt: parseFirestoreDate(data.updatedAt),
+    startedAt: data.startedAt ? parseFirestoreDate(data.startedAt) : undefined,
+    completedAt: data.completedAt ? parseFirestoreDate(data.completedAt) : undefined,
 });
 
 export class FirebaseSessionService implements ISessionService {
