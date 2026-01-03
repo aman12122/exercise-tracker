@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { firebaseSessionService } from '../../services/firebase/FirebaseSessionService';
-import { firebaseExerciseService } from '../../services/firebase/FirebaseExerciseService';
-import { useAuth } from '../../store/AuthContext';
+import { firebaseSessionService } from '../../services/firebase/FirebaseSessionService';
+import { useAuthStore } from '@/store';
 
 const EXERCISE_IDS = [
     'bench_press',
@@ -14,7 +14,7 @@ const EXERCISE_IDS = [
 ];
 
 export const DataSeeder: React.FC = () => {
-    const { user } = useAuth();
+    const user = useAuthStore(state => state.user);
     const [status, setStatus] = useState<string>('');
     const [loading, setLoading] = useState(false);
 
