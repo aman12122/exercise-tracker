@@ -63,10 +63,6 @@ export function AppLayout({ children }: AppLayoutProps) {
             </header>
 
             <main className={styles.main}>{children}</main>
-
-            <footer className={styles.footer}>
-                Built with ❤️ for learning DevOps • Exercise Tracker v1.0
-            </footer>
         </div>
     );
 }

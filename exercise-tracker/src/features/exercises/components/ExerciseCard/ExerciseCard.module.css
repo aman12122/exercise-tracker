@@ -1,93 +1,130 @@
+/* Base Card */
 .exerciseCard {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: var(--space-lg);
-    padding: var(--space-lg) var(--space-xl);
-    background: linear-gradient(145deg, var(--color-bg-secondary) 0%, rgba(30, 30, 35, 0.95) 100%);
-    border: 1px solid var(--color-border);
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-lg);
+    background: linear-gradient(145deg, var(--glass-bg) 0%, rgba(30, 30, 35, 0.8) 100%);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-lg);
-    transition: all 0.25s ease;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all var(--transition-normal);
+    overflow: hidden;
+    animation: cardSlideIn 0.3s ease-out backwards;
+}
+
+@keyframes cardSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .exerciseCard:hover {
+    background: linear-gradient(145deg, var(--glass-bg-light) 0%, rgba(40, 40, 50, 0.9) 100%);
+    border-color: var(--glass-border-light);
+    transform: translateX(4px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.exerciseCard:hover .glowEffect {
+    opacity: 1;
+}
+
+.exerciseCardSelected {
+    background: linear-gradient(145deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
     border-color: var(--color-accent-primary);
-    background: linear-gradient(145deg, var(--color-bg-tertiary) 0%, rgba(40, 40, 50, 0.98) 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.15);
+    box-shadow: var(--shadow-glow);
 }
 
-.exerciseCard--selected {
-    border-color: var(--color-accent-primary);
-    background: rgba(99, 102, 241, 0.15);
-    box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+.exerciseCardCompact {
+    padding: var(--space-sm) var(--space-md);
+    gap: var(--space-sm);
 }
 
-.exerciseCard--compact {
-    padding: var(--space-md) var(--space-lg);
-    gap: var(--space-md);
+/* Glow Effect */
+.glowEffect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(99, 102, 241, 0.15) 0%,
+            transparent 50%);
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+    pointer-events: none;
 }
 
-.muscleIcon {
+/* Icon Wrapper */
+.iconWrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     border-radius: var(--radius-md);
-    font-size: var(--font-size-lg);
     flex-shrink: 0;
+    transition: all var(--transition-normal);
 }
 
-.muscleIcon--chest {
-    background: rgba(239, 68, 68, 0.2);
-    color: var(--color-muscle-chest);
+.exerciseCardCompact .iconWrapper {
+    width: 36px;
+    height: 36px;
 }
 
-.muscleIcon--back {
-    background: rgba(59, 130, 246, 0.2);
-    color: var(--color-muscle-back);
+.exerciseCard:hover .iconWrapper {
+    transform: scale(1.1);
 }
 
-.muscleIcon--shoulders {
-    background: rgba(245, 158, 11, 0.2);
-    color: var(--color-muscle-shoulders);
+/* Icon Colors */
+.iconWrapperChest {
+    background: rgba(239, 68, 68, 0.15);
 }
 
-.muscleIcon--biceps {
-    background: rgba(34, 197, 94, 0.2);
-    color: var(--color-muscle-biceps);
+.iconWrapperBack {
+    background: rgba(59, 130, 246, 0.15);
 }
 
-.muscleIcon--triceps {
-    background: rgba(139, 92, 246, 0.2);
-    color: var(--color-muscle-triceps);
+.iconWrapperShoulders {
+    background: rgba(245, 158, 11, 0.15);
 }
 
-.muscleIcon--forearms {
-    background: rgba(20, 184, 166, 0.2);
-    color: #14b8a6;
+.iconWrapperBiceps {
+    background: rgba(34, 197, 94, 0.15);
 }
 
-.muscleIcon--quadriceps,
-.muscleIcon--hamstrings,
-.muscleIcon--glutes,
-.muscleIcon--calves {
-    background: rgba(236, 72, 153, 0.2);
-    color: var(--color-muscle-legs);
+.iconWrapperTriceps {
+    background: rgba(139, 92, 246, 0.15);
 }
 
-.muscleIcon--core {
-    background: rgba(20, 184, 166, 0.2);
-    color: var(--color-muscle-core);
+.iconWrapperForearms {
+    background: rgba(20, 184, 166, 0.15);
 }
 
-.muscleIcon--full_body {
-    background: rgba(156, 163, 175, 0.2);
-    color: #9ca3af;
+.iconWrapperQuadriceps,
+.iconWrapperHamstrings,
+.iconWrapperGlutes,
+.iconWrapperCalves {
+    background: rgba(236, 72, 153, 0.15);
 }
 
+.iconWrapperCore {
+    background: rgba(20, 184, 166, 0.15);
+}
+
+.iconWrapperFullbody {
+    background: rgba(99, 102, 241, 0.15);
+}
+
+/* Content */
 .content {
     flex: 1;
     min-width: 0;
@@ -98,8 +135,16 @@
     font-weight: var(--font-weight-medium);
     color: var(--color-text-primary);
     margin-bottom: var(--space-xs);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
+.exerciseCardCompact .name {
+    font-size: var(--font-size-sm);
+}
+
+/* Meta Tags */
 .meta {
     display: flex;
     align-items: center;
@@ -110,31 +155,47 @@
 .tag {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-xs);
-    padding: 2px var(--space-sm);
+    gap: 4px;
+    padding: 3px var(--space-sm);
     background: var(--color-bg-tertiary);
     border-radius: var(--radius-full);
     font-size: var(--font-size-xs);
     color: var(--color-text-secondary);
 }
 
-.tag--custom {
+.tagCustom {
     background: rgba(99, 102, 241, 0.2);
     color: var(--color-accent-secondary);
 }
 
+/* Checkmark */
 .checkmark {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     border-radius: var(--radius-full);
-    background: var(--color-accent-primary);
+    background: var(--gradient-primary);
     color: white;
     flex-shrink: 0;
+    box-shadow: var(--shadow-glow);
+    animation: popIn 0.3s var(--transition-spring);
 }
 
+@keyframes popIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Add Button */
 .addButton {
     display: flex;
     align-items: center;
@@ -143,12 +204,14 @@
     height: 32px;
     border-radius: var(--radius-full);
     background: var(--color-bg-tertiary);
-    color: var(--color-text-secondary);
+    color: var(--color-text-muted);
     flex-shrink: 0;
-    transition: all var(--transition-fast);
+    transition: all var(--transition-normal);
 }
 
 .exerciseCard:hover .addButton {
-    background: var(--color-accent-primary);
+    background: var(--gradient-primary);
     color: white;
+    transform: scale(1.1);
+    box-shadow: var(--shadow-glow);
 }
