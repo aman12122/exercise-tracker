@@ -35,14 +35,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                         >
                             Dashboard
                         </NavLink>
-                        <NavLink
-                            to="/home"
-                            className={({ isActive }) =>
-                                `${styles.navLink} ${isActive ? styles['navLink--active'] : ''}`
-                            }
-                        >
-                            Workouts
-                        </NavLink>
+
                         <NavLink
                             to="/exercises"
                             className={({ isActive }) =>
