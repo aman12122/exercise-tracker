@@ -31,6 +31,8 @@ const STATUS_LABELS: Record<string, string> = {
 export function WorkoutSessionView({ sessionId }: WorkoutSessionViewProps) {
     const navigate = useNavigate();
     const user = useAuthStore((state) => state.user);
+    const isAuthLoading = useAuthStore((state) => state.isLoading);
+    const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
     const weightUnit = user?.preferences?.weightUnit || 'lb';
 
     const { data: session, isLoading, error } = useSession(sessionId);
@@ -95,7 +97,7 @@ export function WorkoutSessionView({ sessionId }: WorkoutSessionViewProps) {
         return session?.exercises.map((ex) => ex.exerciseId) ?? [];
     }, [session]);
 
-    if (isLoading) {
+    if (isLoading || isAuthLoading || (!isAuthenticated && !session)) {
         return (
             <div className={styles.loading}>
                 <div className={styles.loadingSpinner} />
