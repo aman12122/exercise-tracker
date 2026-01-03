@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import type { Exercise } from '@/domain';
 import { calculateSessionVolume } from '@/domain';
@@ -28,6 +29,7 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 export function WorkoutSessionView({ sessionId }: WorkoutSessionViewProps) {
+    const navigate = useNavigate();
     const user = useAuthStore((state) => state.user);
     const weightUnit = user?.preferences?.weightUnit || 'lb';
 
@@ -237,6 +239,22 @@ export function WorkoutSessionView({ sessionId }: WorkoutSessionViewProps) {
                                 Complete Workout
                             </Button>
                         )}
+                    </footer>
+                </>
+            )}
+
+            {/* Completed State - Return to Home */}
+            {session.status === 'completed' && (
+                <>
+                    <div className={styles.footerSpacer} />
+                    <footer className={styles.footer}>
+                        <Button
+                            variant="primary"
+                            size="lg"
+                            onClick={() => navigate('/dashboard')}
+                        >
+                            Return to Home
+                        </Button>
                     </footer>
                 </>
             )}

@@ -32,6 +32,11 @@ const CHEST_EXERCISES: ExerciseData[] = [
     { name: 'Chest Dips', muscleGroup: 'chest', secondaryMuscles: ['triceps'], equipment: 'bodyweight' },
     { name: 'Machine Chest Press', muscleGroup: 'chest', equipment: 'machine' },
     { name: 'Pec Deck Machine', muscleGroup: 'chest', equipment: 'machine' },
+    { name: 'Decline Bench Press', muscleGroup: 'chest', secondaryMuscles: ['triceps', 'shoulders'], equipment: 'barbell' },
+    { name: 'Decline Dumbbell Press', muscleGroup: 'chest', secondaryMuscles: ['triceps', 'shoulders'], equipment: 'dumbbell' },
+    { name: 'Landmine Press', muscleGroup: 'chest', secondaryMuscles: ['shoulders', 'triceps'], equipment: 'barbell' },
+    { name: 'Svend Press', muscleGroup: 'chest', equipment: 'other' },
+    { name: 'Cable Crossover', muscleGroup: 'chest', equipment: 'cable' },
 ];
 
 const BACK_EXERCISES: ExerciseData[] = [
@@ -44,6 +49,12 @@ const BACK_EXERCISES: ExerciseData[] = [
     { name: 'Seated Cable Row', muscleGroup: 'back', secondaryMuscles: ['biceps'], equipment: 'cable' },
     { name: 'T-Bar Row', muscleGroup: 'back', secondaryMuscles: ['biceps'], equipment: 'barbell' },
     { name: 'Face Pulls', muscleGroup: 'back', secondaryMuscles: ['shoulders'], equipment: 'cable' },
+    { name: 'Pendlay Row', muscleGroup: 'back', secondaryMuscles: ['biceps', 'hamstrings'], equipment: 'barbell' },
+    { name: 'Rack Pulls', muscleGroup: 'back', secondaryMuscles: ['glutes', 'hamstrings'], equipment: 'barbell' },
+    { name: 'Straight Arm Pulldown', muscleGroup: 'back', equipment: 'cable' },
+    { name: 'Dumbbell Pullover', muscleGroup: 'back', secondaryMuscles: ['chest', 'triceps'], equipment: 'dumbbell' },
+    { name: 'Chest Supported Row', muscleGroup: 'back', secondaryMuscles: ['biceps'], equipment: 'machine' },
+    { name: 'Meadows Row', muscleGroup: 'back', secondaryMuscles: ['biceps'], equipment: 'barbell' },
 ];
 
 const SHOULDER_EXERCISES: ExerciseData[] = [
@@ -55,6 +66,11 @@ const SHOULDER_EXERCISES: ExerciseData[] = [
     { name: 'Arnold Press', muscleGroup: 'shoulders', secondaryMuscles: ['triceps'], equipment: 'dumbbell' },
     { name: 'Upright Rows', muscleGroup: 'shoulders', secondaryMuscles: ['biceps'], equipment: 'barbell' },
     { name: 'Shrugs', muscleGroup: 'shoulders', equipment: 'dumbbell' },
+    { name: 'Seated Barbell Press', muscleGroup: 'shoulders', secondaryMuscles: ['triceps'], equipment: 'barbell' },
+    { name: 'Cable Lateral Raise', muscleGroup: 'shoulders', equipment: 'cable' },
+    { name: 'Front Plate Raise', muscleGroup: 'shoulders', equipment: 'other' },
+    { name: 'Reverse Pec Deck', muscleGroup: 'shoulders', secondaryMuscles: ['back'], equipment: 'machine' },
+    { name: 'Single Arm Overhead Press', muscleGroup: 'shoulders', secondaryMuscles: ['triceps'], equipment: 'dumbbell' },
 ];
 
 const ARM_EXERCISES: ExerciseData[] = [
@@ -70,6 +86,13 @@ const ARM_EXERCISES: ExerciseData[] = [
     { name: 'Tricep Dips', muscleGroup: 'triceps', secondaryMuscles: ['chest'], equipment: 'bodyweight' },
     { name: 'Close-Grip Bench Press', muscleGroup: 'triceps', secondaryMuscles: ['chest'], equipment: 'barbell' },
     { name: 'Wrist Curls', muscleGroup: 'forearms', equipment: 'dumbbell' },
+    { name: 'EZ Bar Curl', muscleGroup: 'biceps', equipment: 'barbell' },
+    { name: 'Zottman Curl', muscleGroup: 'biceps', equipment: 'dumbbell' },
+    { name: 'Spider Curl', muscleGroup: 'biceps', equipment: 'dumbbell' },
+    { name: 'Incline Dumbbell Curl', muscleGroup: 'biceps', equipment: 'dumbbell' },
+    { name: 'Rope Tricep Pushdown', muscleGroup: 'triceps', equipment: 'cable' },
+    { name: 'Overhead Cable Extension', muscleGroup: 'triceps', equipment: 'cable' },
+    { name: 'Reverse Grip Barbell Curl', muscleGroup: 'biceps', secondaryMuscles: ['forearms'], equipment: 'barbell' },
 ];
 
 const LEG_EXERCISES: ExerciseData[] = [
@@ -85,6 +108,13 @@ const LEG_EXERCISES: ExerciseData[] = [
     { name: 'Glute Bridge', muscleGroup: 'glutes', equipment: 'bodyweight' },
     { name: 'Calf Raises', muscleGroup: 'calves', equipment: 'machine' },
     { name: 'Seated Calf Raises', muscleGroup: 'calves', equipment: 'machine' },
+    { name: 'Goblet Squat', muscleGroup: 'quadriceps', secondaryMuscles: ['glutes', 'core'], equipment: 'dumbbell' },
+    { name: 'Sumo Deadlift', muscleGroup: 'hamstrings', secondaryMuscles: ['glutes', 'back', 'quadriceps'], equipment: 'barbell' },
+    { name: 'Hack Squat', muscleGroup: 'quadriceps', secondaryMuscles: ['glutes'], equipment: 'machine' },
+    { name: 'Box Squat', muscleGroup: 'quadriceps', secondaryMuscles: ['glutes', 'hamstrings'], equipment: 'barbell' },
+    { name: 'Step-ups', muscleGroup: 'quadriceps', secondaryMuscles: ['glutes'], equipment: 'dumbbell' },
+    { name: 'Nordic Hamstring Curl', muscleGroup: 'hamstrings', equipment: 'bodyweight' },
+    { name: 'Calf Press on Leg Press', muscleGroup: 'calves', equipment: 'machine' },
 ];
 
 const CORE_EXERCISES: ExerciseData[] = [
@@ -96,6 +126,12 @@ const CORE_EXERCISES: ExerciseData[] = [
     { name: 'Ab Wheel Rollout', muscleGroup: 'core', equipment: 'other' },
     { name: 'Hanging Leg Raises', muscleGroup: 'core', equipment: 'bodyweight' },
     { name: 'Dead Bug', muscleGroup: 'core', equipment: 'bodyweight' },
+    { name: 'Bicycle Crunches', muscleGroup: 'core', equipment: 'bodyweight' },
+    { name: 'Mountain Climbers', muscleGroup: 'core', equipment: 'bodyweight' },
+    { name: 'V-Ups', muscleGroup: 'core', equipment: 'bodyweight' },
+    { name: 'Hanging Knee Raises', muscleGroup: 'core', equipment: 'bodyweight' },
+    { name: 'Pallof Press', muscleGroup: 'core', equipment: 'cable' },
+    { name: 'Hollow Body Hold', muscleGroup: 'core', equipment: 'bodyweight' },
 ];
 
 // Generate all exercises with unique IDs

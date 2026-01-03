@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMonthlyCompletions, useDashboardSummary } from '@/hooks';
 import { useAuthStore } from '@/store';
 import { ExerciseProgressSection } from '@/components/progress';
+import { Modal } from '@/components/common';
 import type { WorkoutType } from '@/domain';
 import styles from './DashboardPage.module.css';
 
@@ -41,6 +42,8 @@ export function DashboardPage() {
     const navigate = useNavigate();
     const user = useAuthStore(state => state.user);
     const [currentDate, setCurrentDate] = useState(new Date());
+    const [selectedDayWorkouts, setSelectedDayWorkouts] = useState<typeof completions | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     // Week calendar data
     const weekStart = startOfWeek(currentDate);
@@ -54,9 +57,9 @@ export function DashboardPage() {
     const handlePrevWeek = () => setCurrentDate(subWeeks(currentDate, 1));
     const handleNextWeek = () => setCurrentDate(addWeeks(currentDate, 1));
 
-    const getCompletionForDay = (day: Date) => {
+    const getCompletionsForDay = (day: Date) => {
         const dateStr = format(day, 'yyyy-MM-dd');
-        return completions.find(c => c.date === dateStr);
+        return completions.filter(c => c.date === dateStr);
     };
 
     // Calculate stats
@@ -74,12 +77,35 @@ export function DashboardPage() {
     }, [summary]);
 
     const formatWeekRange = () => {
-        const startMonth = format(weekStart, 'MMM d');
-        const endMonth = format(weekEnd, 'd, yyyy');
-        return `${startMonth} - ${endMonth}`;
+        const startYear = weekStart.getFullYear();
+        const endYear = weekEnd.getFullYear();
+        const startMonth = weekStart.getMonth();
+        const endMonth = weekEnd.getMonth();
+
+        // Different years - show full date for both
+        if (startYear !== endYear) {
+            return `${format(weekStart, 'MMM d, yyyy')} - ${format(weekEnd, 'MMM d, yyyy')}`;
+        }
+
+        // Same year but different months - show month for both, year only at end
+        if (startMonth !== endMonth) {
+            return `${format(weekStart, 'MMM d')} - ${format(weekEnd, 'MMM d, yyyy')}`;
+        }
+
+        // Same month and year - show month once, year at end
+        return `${format(weekStart, 'MMM d')} - ${format(weekEnd, 'd, yyyy')}`;
     };
 
     const displayName = user?.displayName || user?.username || 'Athlete';
+
+    const handleDayClick = (dayCompletions: typeof completions) => {
+        if (dayCompletions.length === 1) {
+            navigate(`/workout/${dayCompletions[0].sessionId}`);
+        } else if (dayCompletions.length > 1) {
+            setSelectedDayWorkouts(dayCompletions);
+            setIsModalOpen(true);
+        }
+    };
 
     return (
         <div className={styles.container}>
@@ -153,8 +179,10 @@ export function DashboardPage() {
                     </div>
                     <div className={styles.daysRow}>
                         {days.map(day => {
-                            const completion = getCompletionForDay(day);
+                            const dayCompletions = getCompletionsForDay(day);
                             const isTodayDate = isToday(day);
+                            const hasWorkouts = dayCompletions.length > 0;
+                            const isMultiple = dayCompletions.length > 1;
 
                             return (
                                 <div
@@ -162,22 +190,46 @@ export function DashboardPage() {
                                     className={`
                                         ${styles.dayCell}
                                         ${isTodayDate ? styles.dayCellToday : ''}
-                                        ${completion ? styles.dayCellHasWorkout : ''}
+                                        ${hasWorkouts ? styles.dayCellHasWorkout : ''}
                                     `}
                                     onClick={() => {
-                                        if (completion) {
-                                            navigate(`/workout/${completion.sessionId}`);
+                                        if (hasWorkouts) {
+                                            handleDayClick(dayCompletions);
                                         }
                                     }}
                                 >
                                     <span className={styles.dayNumber}>{format(day, 'd')}</span>
-                                    {completion && (
+
+                                    {/* Multiple Workouts Indicator */}
+                                    {isMultiple && (
+                                        <div className={styles.multipleWorkoutsBadge}>
+                                            {dayCompletions.length}
+                                        </div>
+                                    )}
+
+                                    {/* Single Workout Type */}
+                                    {!isMultiple && hasWorkouts && (
                                         <>
                                             <div className={styles.workoutIndicator}>
-                                                <div className={`${styles.workoutTypeDot} ${WORKOUT_DOT_CLASSES[completion.type] || ''}`} />
+                                                <div className={`${styles.workoutTypeDot} ${WORKOUT_DOT_CLASSES[dayCompletions[0].type] || ''}`} />
                                             </div>
-                                            <span className={styles.workoutTypeLabel}>{completion.type}</span>
+                                            <span className={styles.workoutTypeLabel}>{dayCompletions[0].type}</span>
                                         </>
+                                    )}
+
+                                    {/* Multiple Workout Types Dots */}
+                                    {isMultiple && (
+                                        <div className={styles.multiDotsContainer}>
+                                            {dayCompletions.slice(0, 3).map((comp, idx) => (
+                                                <div
+                                                    key={idx}
+                                                    className={`${styles.miniDot} ${WORKOUT_DOT_CLASSES[comp.type] || ''}`}
+                                                />
+                                            ))}
+                                            {dayCompletions.length > 3 && (
+                                                <div className={styles.miniDotPlus}>+</div>
+                                            )}
+                                        </div>
                                     )}
                                 </div>
                             );
@@ -217,6 +269,36 @@ export function DashboardPage() {
                 </div>
 
             </main >
+
+            {/* Workout Selector Modal */}
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                title="Workouts Completed"
+                size="sm"
+            >
+                <div className={styles.workoutList}>
+                    {selectedDayWorkouts?.map((workout, index) => (
+                        <div
+                            key={index}
+                            className={styles.workoutListItem}
+                            onClick={() => {
+                                setIsModalOpen(false);
+                                navigate(`/workout/${workout.sessionId}`);
+                            }}
+                        >
+                            <div className={`${styles.workoutListDot} ${WORKOUT_DOT_CLASSES[workout.type] || ''}`}></div>
+                            <div className={styles.workoutListInfo}>
+                                <div className={styles.workoutListName}>{workout.name || `${workout.type} Workout`}</div>
+                                <div className={styles.workoutListTime}>
+                                    {format(workout.completedAt, 'h:mm a')}
+                                </div>
+                            </div>
+                            <div className={styles.workoutListArrow}>→</div>
+                        </div>
+                    ))}
+                </div>
+            </Modal>
         </div >
     );
 }
