@@ -49,46 +49,40 @@ export function BeginWorkoutPage() {
         setIsStarting(true);
         try {
             let session;
+            let exerciseIds: string[] = [];
 
             if (isCustomMode) {
-                // Create custom
+                // Custom Workout
+                exerciseIds = customSelection;
+
                 session = await sessionService.create(userId, {
                     sessionDate: new Date(),
                     name: "Custom Workout",
-                    type: 'upper' // default or derive? 
+                    type: 'upper', // default or derive? 
+                    initialExerciseIds: exerciseIds,
+                    startImmediately: true
                 });
-
-                // Add selected exercises
-                for (const exId of customSelection) {
-                    await sessionService.addExercise(session.id, exId);
-                }
 
             } else if (selectedTemplateId) {
                 const template = templates.find(t => t.id === selectedTemplateId);
                 if (!template) return;
 
+                // Template Workout
+                // Assuming template.exercises uses same IDs as system exercises
+                exerciseIds = template.exercises.map(ex => ex.id);
+
                 session = await sessionService.create(userId, {
                     sessionDate: new Date(),
                     name: template.name,
                     templateId: template.id,
-                    type: template.type
+                    type: template.type,
+                    initialExerciseIds: exerciseIds,
+                    startImmediately: true
                 });
-
-                // Add template exercises
-                for (const ex of template.exercises) {
-                    // Assuming template.exercises uses same IDs as system exercises
-                    // If not, we might fail here. 
-                    // For demo, we assume they match.
-                    try {
-                        await sessionService.addExercise(session.id, ex.id);
-                    } catch (e) {
-                        console.warn(`Failed to add exercise ${ex.id}`, e);
-                    }
-                }
             }
 
             if (session) {
-                await sessionService.startSession(session.id);
+                // No need to startSession or loop add exercises anymore!
                 navigate(`/workout/${session.id}`);
             }
 

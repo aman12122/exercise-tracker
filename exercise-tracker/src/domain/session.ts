@@ -71,6 +71,8 @@ export interface CreateSessionDTO {
     name?: string;
     templateId?: string;
     type?: WorkoutType;
+    initialExerciseIds?: string[];
+    startImmediately?: boolean;
 }
 
 export interface AddExerciseToSessionDTO {

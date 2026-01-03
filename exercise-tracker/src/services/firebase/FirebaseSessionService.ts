@@ -127,16 +127,51 @@ export class FirebaseSessionService implements ISessionService {
     async create(userId: string, dto: CreateSessionDTO): Promise<WorkoutSession> {
         if (!db) throw new Error("Firebase DB not initialized");
         const ref = collection(db, 'users', userId, 'workoutSessions');
-        const newDoc = await addDoc(ref, {
+
+        let initialExercises: SessionExercise[] = [];
+
+        // 1. Pre-fetch exercises if provided (Parallel Read)
+        if (dto.initialExerciseIds && dto.initialExerciseIds.length > 0) {
+            const exercises = await Promise.all(
+                dto.initialExerciseIds.map(id => firebaseExerciseService.getById(id))
+            );
+
+            initialExercises = exercises.map((ex, index) => {
+                if (!ex) return null;
+                // Clean undefined and ensure clean object
+                const cleanEx = JSON.parse(JSON.stringify(ex));
+                return {
+                    id: uuidv4(),
+                    exerciseId: cleanEx.id,
+                    exercise: cleanEx,
+                    orderIndex: index,
+                    sets: [] as SetLog[]
+                } as SessionExercise;
+            }).filter((ex): ex is SessionExercise => ex !== null);
+        }
+
+        // 2. Prepare session object
+        const newSessionData = {
             ...dto,
+            // Remove our special DTO fields so they don't get saved to Firestore
+            initialExerciseIds: undefined,
+            startImmediately: undefined,
+
             userId,
             name: dto.name || "Custom Workout",
-            status: 'not_started',
-            exercises: [],
+            status: dto.startImmediately ? 'in_progress' : 'not_started',
+            exercises: initialExercises,
             sessionDate: Timestamp.fromDate(dto.sessionDate),
+            startedAt: dto.startImmediately ? serverTimestamp() : null,
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp()
-        });
+        };
+
+        // Remove undefined fields
+        const cleanData = JSON.parse(JSON.stringify(newSessionData));
+
+        // 3. Single Write
+        const newDoc = await addDoc(ref, cleanData);
 
         const snap = await getDoc(newDoc);
         return mapSession(snap.id, snap.data());
