@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { firebaseSessionService } from '../../services/firebase/FirebaseSessionService';
-import { firebaseSessionService } from '../../services/firebase/FirebaseSessionService';
 import { useAuthStore } from '@/store';
 
 const EXERCISE_IDS = [
@@ -38,7 +37,7 @@ export const DataSeeder: React.FC = () => {
                 setStatus(`Creating session for ${date.toISOString().split('T')[0]}...`);
 
                 // 1. Create Session
-                const session = await firebaseSessionService.create(user.uid, {
+                const session = await firebaseSessionService.create(user.id, {
                     sessionDate: date,
                     name: `Test Workout - ${date.toLocaleDateString()}`,
                     type: i % 2 === 0 ? 'upper' : 'lower' // Alternating types
