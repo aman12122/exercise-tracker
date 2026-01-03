@@ -202,3 +202,196 @@ export const updateUserProfile = onCall<UpdateProfileRequest>(
         }
     }
 );
+
+// ----------------------------------------------------------------------------
+// Dashboard Aggregation Trigger
+// ----------------------------------------------------------------------------
+
+import { onDocumentWritten } from "firebase-functions/v2/firestore";
+
+/**
+ * Updates the dashboard stats whenever a workout session is created, updated, or deleted.
+ * 
+ * Trigger: users/{userId}/workoutSessions/{sessionId}
+ * 
+ * Logic:
+ * 1. Checks if the change is relevant (completed status change or content change of completed session).
+ * 2. Recalculates all stats for the user:
+ *    - Total Workouts, Volume
+ *    - Streaks (Current, Longest)
+ *    - Weekly/Monthly Volume
+ *    - Recent Workouts
+ *    - Top Exercises
+ * 3. Writes result to: users/{userId}/stats/dashboard
+ */
+export const updateDashboardStats = onDocumentWritten(
+    "users/{userId}/workoutSessions/{sessionId}",
+    async (event) => {
+        const userId = event.params.userId;
+
+        // We always recalculate on any write to a session to be safe and simple.
+        // Optimization: We could check if 'status' is 'completed' or was 'completed',
+        // but for now, full recalculation ensures consistency.
+
+        logger.info(`Recalculating dashboard stats for user: ${userId}`);
+
+        try {
+            const now = new Date();
+            const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+            const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+            // Fetch ALL completed sessions for this user
+            // Note: In a massive scale app, this would need to be incremental.
+            // For a personal tracker, fetching < 1000 docs is standard and fast on backend.
+            const sessionsQuery = await db.collection("users").doc(userId).collection("workoutSessions")
+                .where("status", "==", "completed")
+                .orderBy("sessionDate", "desc")
+                .get();
+
+            let totalVolume = 0;
+            let weeklyVolume = 0;
+            let monthlyVolume = 0;
+            const exerciseCounts = new Map<string, { name: string; count: number }>();
+            const recentWorkouts: any[] = [];
+            const workoutDates: Date[] = [];
+
+            for (const doc of sessionsQuery.docs) {
+                const data = doc.data();
+                // Handle both Firestore Timestamp and Date objects
+                const sessionDate = data.sessionDate?.toDate?.() || new Date(data.sessionDate);
+                workoutDates.push(sessionDate);
+
+                // Calculate volume
+                let sessionVolume = 0;
+                const exercises = data.exercises || [];
+                for (const ex of exercises) {
+                    const exId = ex.exerciseId;
+                    const exName = ex.exercise?.name || 'Unknown';
+
+                    if (!exerciseCounts.has(exId)) {
+                        exerciseCounts.set(exId, { name: exName, count: 0 });
+                    }
+                    exerciseCounts.get(exId)!.count += 1;
+
+                    const sets = ex.sets || [];
+                    for (const set of sets) {
+                        sessionVolume += (set.reps || 0) * (set.weight || 0);
+                    }
+                }
+
+                totalVolume += sessionVolume;
+
+                if (sessionDate >= sevenDaysAgo) {
+                    weeklyVolume += sessionVolume;
+                }
+                if (sessionDate >= thirtyDaysAgo) {
+                    monthlyVolume += sessionVolume;
+                }
+
+                // Recent workouts (max 5)
+                if (recentWorkouts.length < 5) {
+                    recentWorkouts.push({
+                        date: sessionDate, // Firestore will convert this to Timestamp on save
+                        name: data.name || 'Workout',
+                        type: data.type,
+                        sessionId: doc.id
+                    });
+                }
+            }
+
+            // Calculate streaks
+            const { currentStreak, longestStreak } = calculateStreaks(workoutDates);
+
+            // Top 5 exercises
+            const topExercises = Array.from(exerciseCounts.entries())
+                .map(([id, data]) => ({
+                    exerciseId: id,
+                    exerciseName: data.name,
+                    count: data.count
+                }))
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 5);
+
+            const dashboardStats = {
+                totalWorkouts: sessionsQuery.size,
+                totalVolume,
+                currentStreak,
+                longestStreak,
+                weeklyVolume,
+                monthlyVolume,
+                recentWorkouts,
+                topExercises,
+                lastUpdated: FieldValue.serverTimestamp()
+            };
+
+            // Write to stats/dashboard
+            await db.collection("users").doc(userId).collection("stats").doc("dashboard").set(dashboardStats);
+
+            logger.info(`Stats updated successfully for user: ${userId}`);
+
+        } catch (error) {
+            logger.error("Error updating dashboard stats:", error);
+        }
+    }
+);
+
+// Helper: Calculate current and longest streaks
+function calculateStreaks(dates: Date[]): { currentStreak: number; longestStreak: number } {
+    if (dates.length === 0) return { currentStreak: 0, longestStreak: 0 };
+
+    // Normalize to date strings and dedupe
+    const uniqueDays = [...new Set(
+        dates.map(d => d.toISOString().split('T')[0])
+    )].sort().reverse(); // Most recent first
+
+    const today = new Date().toISOString().split('T')[0];
+    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+    let currentStreak = 0;
+    let longestStreak = 0;
+    let tempStreak = 0;
+    let lastDate: Date | null = null;
+
+    // Check if today or yesterday has a workout to start current streak
+    const hasToday = uniqueDays[0] === today;
+    const hasYesterday = uniqueDays[0] === yesterday || uniqueDays[1] === yesterday;
+
+    for (const dateStr of uniqueDays) {
+        const d = new Date(dateStr);
+
+        if (lastDate === null) {
+            tempStreak = 1;
+        } else {
+            const diff = (lastDate.getTime() - d.getTime()) / (24 * 60 * 60 * 1000);
+            if (diff <= 1.5) { // Allow for timezone variations
+                tempStreak += 1;
+            } else {
+                if (tempStreak > longestStreak) longestStreak = tempStreak;
+                tempStreak = 1;
+            }
+        }
+        lastDate = d;
+    }
+
+    if (tempStreak > longestStreak) longestStreak = tempStreak;
+
+    // Current streak is only valid if most recent workout was today or yesterday
+    if (hasToday || hasYesterday) {
+        currentStreak = tempStreak;
+        // Recount from the most recent date
+        let streak = 1;
+        for (let i = 1; i < uniqueDays.length; i++) {
+            const curr = new Date(uniqueDays[i - 1]);
+            const prev = new Date(uniqueDays[i]);
+            const diff = (curr.getTime() - prev.getTime()) / (24 * 60 * 60 * 1000);
+            if (diff <= 1.5) {
+                streak += 1;
+            } else {
+                break;
+            }
+        }
+        currentStreak = streak;
+    }
+
+    return { currentStreak, longestStreak };
+}
