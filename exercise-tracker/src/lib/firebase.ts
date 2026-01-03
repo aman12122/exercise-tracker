@@ -49,7 +49,7 @@ if (config.features.useFirebase) {
             if (import.meta.env.DEV && location.hostname === 'localhost') {
                 console.log('[Firebase] Connecting to Emulators...');
                 connectAuthEmulator(auth, 'http://localhost:9099');
-                connectFirestoreEmulator(db, 'localhost', 8080);
+                connectFirestoreEmulator(db, 'localhost', 8081);
             }
 
             // Storage is optional - only initialize if the bucket is configured
