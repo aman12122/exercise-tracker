@@ -9,7 +9,7 @@ import type {
     CreateSetDTO,
     UpdateSetDTO,
 } from '@/domain';
-import { useCurrentUserId } from '@/store';
+import { useCurrentUserId, useAuthStore } from '@/store';
 import { historyKeys } from './useExerciseHistory';
 
 // Query keys for cache management
@@ -38,10 +38,11 @@ export function useSessions() {
 
 // Get session by ID
 export function useSession(id: string | null) {
+    const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
     return useQuery({
         queryKey: id ? sessionKeys.detail(id) : ['empty'],
         queryFn: () => (id ? sessionService.getById(id) : null),
-        enabled: !!id,
+        enabled: !!id && isAuthenticated,
         staleTime: 30 * 1000, // 30 seconds - sessions change frequently during workout
     });
 }
