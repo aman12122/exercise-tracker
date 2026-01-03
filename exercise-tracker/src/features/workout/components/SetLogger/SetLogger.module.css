@@ -1,0 +1,221 @@
+/* Set Logger - Modern Glassmorphism Design */
+
+.setLogger {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+/* Individual set row */
+.setRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: var(--glass-bg-light);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    animation: setSlideIn 0.3s ease-out;
+    transition: all var(--transition-fast);
+}
+
+.setRow:hover {
+    border-color: var(--glass-border-light);
+    background: var(--glass-bg-elevated);
+}
+
+@keyframes setSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Set number badge with gradient */
+.setNumber {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: white;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+/* Input group layout */
+.inputGroup {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex: 1;
+}
+
+/* Modern glass inputs */
+.input {
+    width: 80px;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-md);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    transition: all var(--transition-fast);
+}
+
+.input:focus {
+    border-color: var(--color-accent-primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2), 0 0 20px rgba(99, 102, 241, 0.1);
+    background: var(--glass-bg-elevated);
+}
+
+.input--weight {
+    width: 100px;
+}
+
+.inputLabel {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Action buttons */
+.actions {
+    display: flex;
+    gap: var(--space-xs);
+}
+
+.actionButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    color: var(--color-text-muted);
+    background: var(--glass-bg);
+    border: 1px solid transparent;
+    transition: all var(--transition-fast);
+}
+
+.actionButton:hover {
+    background: var(--glass-bg-elevated);
+    color: var(--color-text-primary);
+    border-color: var(--glass-border-light);
+    transform: scale(1.1);
+}
+
+.actionButton--delete:hover {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Add Set button - Enhanced */
+.addSetButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    width: 100%;
+    padding: var(--space-md);
+    background: var(--glass-bg);
+    border: 2px dashed var(--glass-border-light);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.addSetButton::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-primary);
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+}
+
+.addSetButton:hover {
+    border-color: var(--color-accent-primary);
+    border-style: solid;
+    color: var(--color-text-primary);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-glow);
+}
+
+.addSetButton:hover::before {
+    opacity: 0.1;
+}
+
+.addSetButton:active {
+    transform: translateY(0);
+}
+
+/* Empty state message */
+.emptyMessage {
+    text-align: center;
+    padding: var(--space-xl);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    background: var(--glass-bg);
+    border: 1px dashed var(--glass-border);
+    border-radius: var(--radius-lg);
+}
+
+/* Volume display */
+.volume {
+    display: flex;
+    justify-content: flex-end;
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.volumeValue {
+    font-weight: var(--font-weight-bold);
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-left: var(--space-xs);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .setRow {
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+    }
+
+    .inputGroup {
+        flex: 1 1 100%;
+        order: 2;
+    }
+
+    .actions {
+        order: 1;
+    }
+
+    .input {
+        flex: 1;
+        width: auto;
+        min-width: 60px;
+    }
+}

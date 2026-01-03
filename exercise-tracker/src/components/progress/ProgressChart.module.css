@@ -1,0 +1,51 @@
+.container {
+    position: relative;
+    margin-bottom: var(--space-lg);
+}
+
+.chart {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.axisLabel {
+    font-size: 10px;
+    fill: var(--color-text-secondary);
+}
+
+.dataPoint {
+    cursor: pointer;
+    transition: r 0.15s ease;
+}
+
+.empty {
+    text-align: center;
+    color: var(--color-text-secondary);
+    padding: var(--space-xl);
+}
+
+.tooltip {
+    position: absolute;
+    transform: translate(-50%, -120%);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-sm) var(--space-md);
+    pointer-events: none;
+    z-index: 10;
+    box-shadow: var(--shadow-lg);
+    min-width: 120px;
+}
+
+.tooltipDate {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    margin-bottom: 2px;
+}
+
+.tooltipValue {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+}

@@ -1,0 +1,1 @@
+export { WorkoutSessionView } from './WorkoutSessionView';
