@@ -1,0 +1,17 @@
+<svg viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Upper body back view - torso silhouette -->
+  <!-- Neck -->
+  <path d="M42 2 L58 2 L60 10 L40 10 L42 2 Z" fill="#8BA4B4"/>
+  <!-- Shoulders -->
+  <path d="M15 18 Q8 22 5 28 L5 40 Q8 48 15 50 L20 45 Q22 35 22 25 L15 18 Z" fill="#8BA4B4"/>
+  <path d="M85 18 Q92 22 95 28 L95 40 Q92 48 85 50 L80 45 Q78 35 78 25 L85 18 Z" fill="#8BA4B4"/>
+  <!-- Torso base -->
+  <path d="M22 15 L40 10 L60 10 L78 15 L80 25 Q82 40 80 55 L78 70 Q70 85 50 88 Q30 85 22 70 L20 55 Q18 40 20 25 L22 15 Z" fill="#8BA4B4"/>
+  <!-- Lats muscles - highlighted in red -->
+  <path d="M25 35 Q28 30 35 28 L45 30 L48 50 Q42 55 35 55 L28 52 Q25 48 25 42 L25 35 Z" fill="#EF4444"/>
+  <path d="M75 35 Q72 30 65 28 L55 30 L52 50 Q58 55 65 55 L72 52 Q75 48 75 42 L75 35 Z" fill="#EF4444"/>
+  <!-- Spine line -->
+  <path d="M50 15 L50 75" stroke="#3D4F5F" stroke-width="1.5"/>
+  <!-- Trapezius outline -->
+  <path d="M35 15 Q45 12 50 12 Q55 12 65 15 L60 25 L50 28 L40 25 L35 15 Z" stroke="#3D4F5F" stroke-width="1" fill="none"/>
+</svg>

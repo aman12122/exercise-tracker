@@ -1,0 +1,15 @@
+<svg viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Lower body/legs back view silhouette -->
+  <!-- Waist/hip area -->
+  <path d="M15 5 Q20 2 40 2 Q60 2 65 5 L68 15 Q70 25 68 30 L62 35 Q50 38 40 40 Q30 38 18 35 L12 30 Q10 25 12 15 L15 5 Z" fill="#8BA4B4"/>
+  <!-- Left leg base -->
+  <path d="M18 35 Q20 50 22 70 L24 90 Q25 95 27 98 L30 95 Q32 85 32 70 L30 50 Q28 40 30 35" fill="#8BA4B4"/>
+  <!-- Right leg base -->
+  <path d="M50 35 Q52 40 50 50 L48 70 Q48 85 50 95 L53 98 Q55 95 56 90 L58 70 Q60 50 62 35" fill="#8BA4B4"/>
+  <!-- Left hamstring - highlighted in orange -->
+  <path d="M23 40 Q20 52 22 68 L24 82 Q26 78 28 72 L28 55 Q28 45 26 40 L23 40 Z" fill="#F97316"/>
+  <!-- Right hamstring - highlighted in orange -->
+  <path d="M52 40 Q54 45 52 55 L52 72 Q54 78 56 82 L58 68 Q60 52 57 40 L52 40 Z" fill="#F97316"/>
+  <!-- Shorts/underwear -->
+  <path d="M18 15 Q25 12 40 12 Q55 12 62 15 L62 32 Q50 35 40 35 Q30 35 18 32 L18 15 Z" fill="#6B7C89" opacity="0.7"/>
+</svg>

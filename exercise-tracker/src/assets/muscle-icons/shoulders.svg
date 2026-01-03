@@ -1,0 +1,14 @@
+<svg viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Side view arm with shoulder highlighted -->
+  <path d="M85 15 Q75 12 65 15 L55 25 Q45 35 40 50 L35 70 Q32 85 30 100 L28 115 Q25 120 22 118 L18 115 Q15 112 15 108 L18 95 Q22 80 25 65 L30 45 Q35 30 45 20 L55 12 Q65 8 75 10 L85 15 Z" fill="#8BA4B4"/>
+  <!-- Shoulder/deltoid - highlighted in orange/red -->
+  <path d="M78 12 Q85 15 88 22 L88 32 Q85 38 78 38 L70 35 Q65 28 68 20 L78 12 Z" fill="#F97316"/>
+  <!-- Arm outline details -->
+  <path d="M65 25 Q55 40 50 55" stroke="#3D4F5F" stroke-width="1.5" fill="none"/>
+  <path d="M40 50 Q35 65 32 80" stroke="#3D4F5F" stroke-width="1.5" fill="none"/>
+  <!-- Hand -->
+  <path d="M22 118 Q18 122 15 120 L12 115 Q10 110 12 105 L15 108 Q17 112 20 115 L22 118 Z" fill="#2D3E4A"/>
+  <path d="M15 120 L12 118 Q8 115 10 112" stroke="#2D3E4A" stroke-width="2"/>
+  <path d="M12 115 L8 113 Q5 110 7 107" stroke="#2D3E4A" stroke-width="2"/>
+  <path d="M10 112 L6 110 Q3 107 5 104" stroke="#2D3E4A" stroke-width="2"/>
+</svg>

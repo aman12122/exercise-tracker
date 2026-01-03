@@ -1,0 +1,29 @@
+<svg viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Full body front view with all muscles highlighted -->
+  <!-- Head -->
+  <circle cx="40" cy="8" r="6" fill="#8BA4B4"/>
+  <!-- Neck -->
+  <path d="M37 14 L43 14 L45 18 L35 18 L37 14 Z" fill="#8BA4B4"/>
+  <!-- Shoulders -->
+  <path d="M20 22 Q15 24 12 28 L12 35 Q15 40 20 42 L25 38 Q27 32 25 25 L20 22 Z" fill="#EF4444"/>
+  <path d="M60 22 Q65 24 68 28 L68 35 Q65 40 60 42 L55 38 Q53 32 55 25 L60 22 Z" fill="#EF4444"/>
+  <!-- Torso -->
+  <path d="M25 20 L35 18 L45 18 L55 20 L58 28 Q60 42 58 55 L55 68 Q50 75 40 78 Q30 75 25 68 L22 55 Q20 42 22 28 L25 20 Z" fill="#8BA4B4"/>
+  <!-- Chest highlight -->
+  <path d="M28 24 Q34 22 38 24 L38 32 Q34 36 28 34 L26 30 Q26 26 28 24 Z" fill="#EF4444"/>
+  <path d="M52 24 Q46 22 42 24 L42 32 Q46 36 52 34 L54 30 Q54 26 52 24 Z" fill="#EF4444"/>
+  <!-- Abs highlight -->
+  <path d="M35 38 L45 38 L45 65 L35 65 Z" fill="#EF4444" opacity="0.8"/>
+  <!-- Arms -->
+  <path d="M20 42 Q18 50 16 60 L14 72 Q12 78 10 80 L8 78 Q10 70 12 60 L15 48 Q18 42 20 42 Z" fill="#8BA4B4"/>
+  <path d="M60 42 Q62 50 64 60 L66 72 Q68 78 70 80 L72 78 Q70 70 68 60 L65 48 Q62 42 60 42 Z" fill="#8BA4B4"/>
+  <!-- Arm muscles -->
+  <path d="M18 45 Q16 52 15 58 L17 55 Q19 50 18 45 Z" fill="#EF4444"/>
+  <path d="M62 45 Q64 52 65 58 L63 55 Q61 50 62 45 Z" fill="#EF4444"/>
+  <!-- Legs -->
+  <path d="M30 68 Q28 78 27 88 L28 95 Q30 98 32 95 L34 88 Q35 78 34 68" fill="#8BA4B4"/>
+  <path d="M46 68 Q48 78 49 88 L48 95 Q46 98 44 95 L42 88 Q41 78 42 68" fill="#8BA4B4"/>
+  <!-- Leg muscles -->
+  <path d="M30 72 Q29 80 30 88 L32 85 Q33 78 32 72 L30 72 Z" fill="#EF4444"/>
+  <path d="M46 72 Q47 78 46 85 L48 88 Q49 80 48 72 L46 72 Z" fill="#EF4444"/>
+</svg>

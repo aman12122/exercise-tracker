@@ -1,0 +1,14 @@
+<svg viewBox="0 0 60 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Lower legs/calves view -->
+  <!-- Left leg -->
+  <path d="M8 5 Q10 2 15 2 L20 5 Q22 15 22 30 L22 50 Q22 70 20 85 L18 95 Q15 98 12 95 L10 85 Q8 70 8 50 L8 30 Q8 15 8 5 Z" fill="#8BA4B4"/>
+  <!-- Right leg -->
+  <path d="M38 5 Q40 2 45 2 L50 5 Q52 15 52 30 L52 50 Q52 70 50 85 L48 95 Q45 98 42 95 L40 85 Q38 70 38 50 L38 30 Q38 15 38 5 Z" fill="#8BA4B4"/>
+  <!-- Left calf muscle - highlighted in red -->
+  <path d="M10 15 Q8 25 10 40 L12 55 Q14 45 16 35 L18 22 Q16 15 12 12 L10 15 Z" fill="#EF4444"/>
+  <!-- Right calf muscle - highlighted in red -->
+  <path d="M42 12 Q44 15 48 22 L50 35 Q48 45 46 55 L48 40 Q50 25 48 15 L42 12 Z" fill="#EF4444"/>
+  <!-- Feet -->
+  <path d="M10 92 L8 98 Q12 100 18 98 L20 92" fill="#2D3E4A"/>
+  <path d="M40 92 L38 98 Q42 100 48 98 L50 92" fill="#2D3E4A"/>
+</svg>
