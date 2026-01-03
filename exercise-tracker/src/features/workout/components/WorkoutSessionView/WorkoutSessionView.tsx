@@ -69,9 +69,7 @@ export function WorkoutSessionView({ sessionId }: WorkoutSessionViewProps) {
     };
 
     const handleComplete = () => {
-        if (confirm('Complete this workout?')) {
-            completeSession.mutate(sessionId);
-        }
+        completeSession.mutate(sessionId);
     };
 
     // Toggle exercise: add if not present, remove if already added
