@@ -10,6 +10,7 @@ import type {
     UpdateSetDTO,
 } from '@/domain';
 import { useCurrentUserId } from '@/store';
+import { historyKeys } from './useExerciseHistory';
 
 // Query keys for cache management
 export const sessionKeys = {
@@ -125,6 +126,9 @@ export function useCompleteSession() {
             );
             queryClient.invalidateQueries({ queryKey: sessionKeys.active(userId) });
             queryClient.invalidateQueries({ queryKey: sessionKeys.forUser(userId) });
+            // Invalidate exercise history and dashboard summary so progress tracking updates
+            queryClient.invalidateQueries({ queryKey: historyKeys.dashboard(userId) });
+            queryClient.invalidateQueries({ queryKey: historyKeys.all });
         },
     });
 }
