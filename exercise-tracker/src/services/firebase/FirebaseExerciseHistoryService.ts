@@ -17,7 +17,7 @@ import {
     Timestamp
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import type { WorkoutSession, SessionExercise, SetLog } from '@/domain';
+import type { SessionExercise, SetLog } from '@/domain';
 import { calculateEstimated1RM, findBestSet } from '@/domain';
 
 export interface ExerciseHistoryEntry {

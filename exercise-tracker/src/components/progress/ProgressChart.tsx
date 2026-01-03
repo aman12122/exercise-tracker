@@ -21,15 +21,13 @@ interface ProgressChartProps {
     exerciseName: string;
 }
 
-export function ProgressChart({ data, unit, exerciseName }: ProgressChartProps) {
+export function ProgressChart({ data, unit }: ProgressChartProps) {
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
     // Chart dimensions
-    const width = 100; // percentage
     const height = 200;
     const padding = { top: 20, right: 20, bottom: 40, left: 50 };
 
-    const chartWidth = 100; // Will use viewBox for responsive scaling
     const chartHeight = height - padding.top - padding.bottom;
 
     // Calculate scales

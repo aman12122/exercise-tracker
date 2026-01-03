@@ -8,7 +8,6 @@
  */
 
 import { useState, useMemo } from 'react';
-import { format } from 'date-fns';
 import { useExerciseHistory, useExerciseStats, useDashboardSummary } from '@/hooks';
 import { useAuthStore } from '@/store';
 import { getDisplayWeight, formatWeight } from '@/lib/measurementUtils';

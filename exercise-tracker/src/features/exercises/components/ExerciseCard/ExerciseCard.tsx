@@ -1,4 +1,4 @@
-import type { Exercise, MuscleGroup } from '@/domain';
+import type { Exercise } from '@/domain';
 import { MUSCLE_GROUP_LABELS, EQUIPMENT_LABELS } from '@/domain';
 import { MuscleGroupIcon } from '@/components/common';
 import styles from './ExerciseCard.module.css';
