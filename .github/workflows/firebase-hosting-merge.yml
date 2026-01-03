@@ -22,7 +22,7 @@ jobs:
           npm run build
         env:
           VITE_USE_FIREBASE: true
-          VITE_FIREBASE_API_KEY: "AIzaSyCyqk5IjgxbDayR3Qr2_PQqZ8QrB9_bwJM"
+          VITE_FIREBASE_API_KEY: "${{ secrets.VITE_FIREBASE_API_KEY }}"
           VITE_FIREBASE_AUTH_DOMAIN: "exercise-tracker-bb5f5.firebaseapp.com"
           VITE_FIREBASE_PROJECT_ID: "exercise-tracker-bb5f5"
           VITE_FIREBASE_STORAGE_BUCKET: "exercise-tracker-bb5f5.firebasestorage.app"

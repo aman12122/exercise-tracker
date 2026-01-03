@@ -1,4 +1,3 @@
-/* Base Card */
 .exerciseCard {
     position: relative;
     display: flex;
@@ -12,6 +11,7 @@
     transition: all var(--transition-normal);
     overflow: hidden;
     animation: cardSlideIn 0.3s ease-out backwards;
+    height: 100%;
 }
 
 @keyframes cardSlideIn {
