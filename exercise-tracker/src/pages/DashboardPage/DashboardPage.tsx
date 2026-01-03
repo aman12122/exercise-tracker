@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMonthlyCompletions, useDashboardSummary } from '@/hooks';
 import { useAuthStore } from '@/store';
 import { ExerciseProgressSection } from '@/components/progress';
+import { DataSeeder } from '@/components/dev/DataSeeder';
 import type { WorkoutType } from '@/domain';
 import styles from './DashboardPage.module.css';
 
@@ -214,6 +215,8 @@ export function DashboardPage() {
                 {/* Progress Section */}
                 <div className={styles.progressSection}>
                     <ExerciseProgressSection />
+                    {/* Dev Tool: Remove before production */}
+                    <DataSeeder />
                 </div>
             </main>
         </div>
